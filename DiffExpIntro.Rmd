@@ -1,0 +1,80 @@
+---
+title: Differential Expression -- Basics
+subtitle: Statistical Genomics
+author: Kasper D. Hansen
+date: Spring 2022
+output:
+  beamer_presentation
+fontsize: 10pt
+classoption: "aspectratio=169"
+---
+
+# Setup
+
+We will discuss differential expression. Our input data is a matrix of genes by samples ($p \times n$, the transpose of a standard data matrix from statistics).
+
+In applications, the following matters immensely
+
+- How the matrix was created
+- What the numbers represents
+
+We will ignore these imporant questions for now.
+
+
+
+
+# Setup - Numbers
+
+In humans, we have a bit more than $20,000$ protein-coding genes. In humans, each gene has multiple transcripts (isoforms) and we will ignore this and work with a hypothetical ``gene''.
+
+We will (for now) focus on a two group comparison and each group has a small number of samples in it. I tend to think of these categories
+
+1. 3-5 samples per group (small, but standard)
+2. 10's of samples per group (medium)
+3. 100's or 1,000's of samples per group (large, unusual)
+
+So our data matrix is something like
+$$
+20,000 \times 6-10
+$$
+Having this small of a sample size imposes limitations on the statistics.
+
+
+
+# Filtering
+
+Usually the first step is some kind of filtering; common goals are the removal of 
+
+- genes which are unexpressed
+- genes which have low variance
+
+Determining which genes are expressed in a given sample is a hard question. But usually we find that ~50% of genes are unexpressed, leaving us with 8,000-12,000 genes for analysis.
+
+(We will return to filtering.)
+
+# Fold-change and logarithmic scale
+
+For each gene $g$ we have a fold-change, which we usually express on the $\log_2$ scale (or some close approximation thereof). We also refer to this as "effect size", and consider a fold-change of 2 or greater to be "large".
+
+Often, our data matrix itself is $\log_2$ transformed, in which case our (log) fold-change is simply the difference in means
+$$
+D_g = \frac{1}{|\text{G_1}|} \sum_{i \in \text{G_1}} X_{g,i} - \frac{1}{|\text{G_2}|} \sum_{i \in \text{G_2}} X_{g,i} 
+$$
+where $G_1, G_2$ are the samples in groups 1 and 2. 
+
+
+# Fold-change and bias cancelletion
+
+Bias is abundant in genomics. A first approximation is that each gene $g$ has its own bias term $b_g$ which describes a systematic error in measuring the gene $g$, and let us assume this bias is **not** sample-dependent.
+
+Let us assume that the "true" expression in groups 1 and 2 are $\theta^1, \theta^2$. If the $\theta$'s are on the log-scale it is natural to think of the bias term as being additive (corresponding to a multiplicative bias on the original scale).
+
+We then have
+$$
+\underbrace{\theta^1_g + b_g - (\theta^2_g + b_g)}_{\text{observed}} = \theta^1_g - \theta^2_g
+$$
+which represents that a gene-specific bias -- which is not sample-specific -- cancels out when forming (log) fold-changes.
+
+This is a very important property of (log) fold-changes which explains their popularity.
+
+# MA plots 
