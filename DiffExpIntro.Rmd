@@ -78,3 +78,46 @@ which represents that a gene-specific bias -- which is not sample-specific -- ca
 This is a very important property of (log) fold-changes which explains their popularity.
 
 # MA plots 
+
+FIXME: MA plot (good looking) from a microrray experiment
+
+The MA plot depicts $D_g$ (M: "minus") vs. average expression (A: "average"). This is also known as a mean-difference plot or a Bland-Altman plot.
+
+- (Y-axis) Our quantity of interest; the fold change or effect size.
+- (X-axis) Average expression level
+
+Experience tells us this plot is highly informative.
+
+# MA plots
+
+FIXME: MA plot (small size, with some curves)
+
+In differential expression we want to identify genes whose fold-change (effect size) is high relative to their variation.
+
+On the MA plot this looks like two curves (usually symmetric) which - **approximately** - separates genes which are DE from those who are not.
+
+It is a good idea to add a robust smoother to the plot; I like `loeess` or `lowess`. Play with the smoothing.
+
+We almost never observe a clear separation between "noise" and "signal", but rather a continuous smear.
+
+
+# Assumptions
+
+Assumption: most genes are not differentially expressed
+
+For those genes, the variation is "noise". It should be symmetric around zero.
+
+There are situations where we know this assumption is violated. Those are **hard** to analyze and will require special attention. However, don't confuse the few situations where we expect this to happen from a situation where we have no expectations and someone says "well, there
+
+# MA plots
+
+FIXME: MA plot for RNA-seq
+FIXME: Bad MA plot
+FIXME: CGN M plot
+
+# MA plots: RMA
+
+In Irizarry et al (NAR, 2013) they consider a latin square experiment. Specifically, 14 genes were spiked in at known concentrations into a background "soup" of RNA.
+
+In the following plots, one array was chosen as a reference array and MA plots for this array vs. 12 other arrays are overlaid on each other. Colored numbers are spike-in genes at the **estimated** fold-change (number represents true fold change). Red points are genes with a fold-change greater than 2.
+
